@@ -6,8 +6,26 @@ import App from './App';
 
 Enzyme.configure({adapter: new EnzymeAdapter() });
 
-test("renders without crashing", () => {
+test("renders without crash", () => {
 const wrapper = shallow(<App />)
-console.log(wrapper.debug())
-expect(wrapper).toBeTruthy();
+const appComponent = wrapper.find("[data-test='component-app']")
+// console.log(wrapper.debug())
+// expect(wrapper).toBeTruthy();
+expect(appComponent.length).toBe(1);
+});
+
+test("renders increment button", () =>{
+
+});
+
+test("renders counter display",() =>{
+
+});
+
+test("counter starts at 0",()=>{
+
+});
+
+test("clicking button increments counter display",()=>{
+
 });
