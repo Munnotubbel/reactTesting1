@@ -6,6 +6,8 @@ import App from './App';
 
 Enzyme.configure({adapter: new EnzymeAdapter() });
 
+// define the window.alert method as a jest spy. 
+
 
 /** 
  * Factory function to create a ShallowWrapper for the App component
@@ -60,7 +62,7 @@ expect(initialCounterState).toBe(0)
 test("clicking button increments counter display",()=>{
 const counter = 7;
 const wrapper = setup(null, {counter });
-
+const errorDisplay = findByTestAttr(wrapper, "error-display")
 //  find button and click it
 const button = findByTestAttr(wrapper, 'increment-button');
 button.simulate("click");
@@ -68,5 +70,36 @@ button.simulate("click");
 //  find counter display and test value
 const counterDisplay = findByTestAttr(wrapper, 'counter-display');
 expect(counterDisplay.text()).toContain(counter+1)
-
+expect(errorDisplay.text()).length===0
 });
+
+test("clicking button decrements counter display",()=>{
+    const counter = 5;
+    const wrapper = setup(null, {counter});
+    const errorDisplay = findByTestAttr(wrapper, "error-display")
+// find button and click it
+const button = findByTestAttr(wrapper, "decrement-button");
+button.simulate("click");
+
+// find counter display and test value
+const counterDisplay = findByTestAttr(wrapper, "counter-display");
+
+expect(counterDisplay.text()).toContain(counter-1)
+expect(errorDisplay.text()).length===0
+});
+
+test("clicking button decrements counter display not below 0",()=>{
+    const counter = 0;
+    const wrapper = setup(null, {counter});
+    const errorDisplay = findByTestAttr(wrapper, "error-display")
+
+// find button and click it
+const button = findByTestAttr(wrapper, "decrement-button");
+button.simulate("click");
+
+// find counter display and test value
+const counterDisplay = findByTestAttr(wrapper, "counter-display");
+expect(errorDisplay.text()).length>0
+expect(counterDisplay.text()).toContain(0)
+});
+
